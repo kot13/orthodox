@@ -4,8 +4,6 @@ namespace Orthodox;
 class Orthodox
 {
     public $errors = [];
-
-    protected $usedRules = [];
     
     protected $input = [];
 
@@ -109,7 +107,6 @@ class Orthodox
     {
         $ruleClass = 'Orthodox\\Rules\\' . ucfirst($rule) . 'Rule';
         $ruleObject = new $ruleClass();
-        $this->usedRules[$rule] = $ruleObject;
 
         $passed = call_user_func_array([$ruleObject, 'run'], [
             $value,
