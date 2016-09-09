@@ -1,7 +1,7 @@
 <?php
 namespace Orthodox\Rules;
 
-class NumberRule
+class NumberRule implements RuleInterface
 {
     public function run($value, $input, $args)
     {

@@ -1,7 +1,7 @@
 <?php
 namespace Orthodox\Rules;
 
-class EmailRule
+class EmailRule implements RuleInterface
 {
     public function run($value, $input, $args)
     {

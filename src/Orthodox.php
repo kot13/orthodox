@@ -21,13 +21,16 @@ class Orthodox
         $fields = array_unique(array_merge(array_keys($data), array_keys($rules)));
 
         foreach ($fields as $field) {
-            $fieldRules = explode('|', $rules[$field]);
-            $value = isset($data[$field]) ? $data[$field] : null;
-            foreach ($fieldRules as $rule) {
-                $continue = $this->validateAgainstRule( $field, $value, $this->getRuleName($rule), $this->getRuleArgs($rule) );
+            if (isset($rules[$field])) {
+                $value = isset($data[$field]) ? $data[$field] : null;
+                $fieldRules = explode('|', $rules[$field]);
 
-                if (! $continue) {
-                    break;
+                foreach ($fieldRules as $rule) {
+                    $continue = $this->validateAgainstRule($field, $value, $this->getRuleName($rule), $this->getRuleArgs($rule));
+
+                    if (!$continue) {
+                        break;
+                    }
                 }
             }
         }
@@ -108,11 +111,7 @@ class Orthodox
         $ruleClass = 'Orthodox\\Rules\\' . ucfirst($rule) . 'Rule';
         $ruleObject = new $ruleClass();
 
-        $passed = call_user_func_array([$ruleObject, 'run'], [
-            $value,
-            $this->input,
-            $args
-        ]);
+        $passed = $ruleObject->run($value, $this->input, $args);
 
         if (!$passed) {
             $this->errors[$field][] = $ruleObject->error();

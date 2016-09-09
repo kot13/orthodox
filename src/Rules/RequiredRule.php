@@ -1,7 +1,7 @@
 <?php
 namespace Orthodox\Rules;
 
-class RequiredRule
+class RequiredRule implements RuleInterface
 {
     public function run($value, $input, $args)
     {

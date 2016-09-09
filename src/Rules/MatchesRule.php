@@ -1,7 +1,7 @@
 <?php
 namespace Orthodox\Rules;
 
-class MatchesRule
+class MatchesRule implements RuleInterface
 {
     public function run($value, $input, $args)
     {
