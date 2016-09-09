@@ -1,0 +1,17 @@
+{
+    "name": "pavelmurkin/orthodox",
+    "authors": [
+        {
+            "name": "Павел Муркин",
+            "email": "kot_tdf@mail.ru"
+        }
+    ],
+    "require": {
+        "php": ">=5.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Orthodox\\": "src/"
+        }
+    }
+}
