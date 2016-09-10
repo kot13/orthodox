@@ -1,11 +1,17 @@
 <?php
 namespace Orthodox;
 
+use Closure;
+
 class Orthodox
 {
     public $errors = [];
     
     protected $input = [];
+
+    protected $customRules = [];
+
+    protected $customMessages = [];
 
     /**
      * @param array $data
@@ -81,10 +87,13 @@ class Orthodox
         if (!$this->ruleHasArgs($rule)) {
             return [];
         }
+
         list($ruleName, $argsWithBracketAtTheEnd) = explode('(', $rule);
+
         $args = rtrim($argsWithBracketAtTheEnd, ')');
         $args = preg_replace('/\s+/', '', $args);
         $args = explode(',', $args);
+
         return $args;
     }
 
@@ -108,16 +117,38 @@ class Orthodox
      */
     protected function validateAgainstRule($field, $value, $rule, array $args)
     {
-        $ruleClass = 'Orthodox\\Rules\\' . ucfirst($rule) . 'Rule';
-        $ruleObject = new $ruleClass();
+        if (isset($this->customRules[$rule])) {
+            $passed = call_user_func_array($this->customRules[$rule], [$value, $this->input, $args]);
 
-        $passed = $ruleObject->run($value, $this->input, $args);
+            if (!$passed) {
+                $this->errors[$field][] = $this->customMessages[$rule];
 
-        if (!$passed) {
-            $this->errors[$field][] = $ruleObject->error();
+                return false;
+            }
+        } else {
+            $ruleClass = 'Orthodox\\Rules\\' . ucfirst($rule) . 'Rule';
+            $ruleObject = new $ruleClass();
 
-            return false;
+            $passed = $ruleObject->run($value, $this->input, $args);
+
+            if (!$passed) {
+                $this->errors[$field][] = $ruleObject->error();
+
+                return false;
+            }
         }
         return true;
+    }
+
+    /**
+     * @param string $name
+     * @param Closure $callback
+     * @param string $errorMessage
+     */
+    public function addRule($name, Closure $callback, $errorMessage)
+    {
+        $this->customRules[$name] = $callback;
+
+        $this->customMessages[$name] = $errorMessage;
     }
 }

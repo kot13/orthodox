@@ -10,6 +10,6 @@ class EmailRule implements RuleInterface
 
     public function error()
     {
-        return 'Field must be a valid email address.';
+        return 'Value must be a valid email address.';
     }
 }

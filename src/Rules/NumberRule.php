@@ -10,6 +10,6 @@ class NumberRule implements RuleInterface
 
     public function error()
     {
-        return 'Field must be a number.';
+        return 'Value must be a number.';
     }
 }

@@ -11,6 +11,6 @@ class RequiredRule implements RuleInterface
 
     public function error()
     {
-        return 'Field is required.';
+        return 'Value is required.';
     }
 }

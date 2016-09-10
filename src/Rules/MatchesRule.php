@@ -10,6 +10,6 @@ class MatchesRule implements RuleInterface
 
     public function error()
     {
-        return 'Field must match.';
+        return 'Value must match.';
     }
 }
