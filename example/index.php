@@ -3,13 +3,29 @@ require '../vendor/autoload.php';
 
 use Orthodox\Orthodox;
 
-$data = [
+$dataSetFirst = [
     'username'          => 'demo',
-    'email'             => 'kot_tdf@mail.ru',
-    'age'               => 29,
+    'email'             => 'demo@example.com',
+    'age'               => 20,
     'favorite_fruit'    => 'apple',
     'password'          => 'qwerty',
     'password_confirm'  => 'qwerty',
+];
+
+$dataSetSecond = [
+    'email'             => 'example.com',
+    'favorite_fruit'    => 'apple',
+    'password'          => 'qwerty',
+    'password_confirm'  => 'qwerty',
+];
+
+$dataSetThird = [
+    'username'          => 'demo',
+    'email'             => 'demo@example.com',
+    'age'               => 29,
+    'favorite_fruit'    => 'apple',
+    'password'          => 'qwerty',
+    'password_confirm'  => 'qwerty2',
 ];
 
 $rules = [
@@ -27,14 +43,30 @@ $o->addRule('isApple', function($value, $input, $args) {
     return $value === 'apple';
 }, 'This is not an apple');
 
-$o->validate($data, $rules);
+$o->validate($dataSetFirst, $rules);
 
 if ($o->passes()) {
-    echo 'Passed!';
+    echo "First data set passed!\n\r";
 } else {
-    echo 'Not passed!';
+    echo "First data set not passed!\n\r";
+    print_r($o->errors());echo "\n\r";
+}
 
-    echo '<pre>';
+$o->validate($dataSetSecond, $rules);
+
+if ($o->passes()) {
+    echo "Second data set passed!\n\r";
+} else {
+    echo "Second data set not passed!\n\r";
     print_r($o->errors());
-    echo '</pre>';
+    echo "\n\r";
+}
+
+$o->validate($dataSetThird, $rules);
+
+if ($o->passes()) {
+    echo "Third data set passed!\n\r";
+} else {
+    echo "Third data set not passed!\n\r";
+    print_r($o->errors());echo "\n\r";
 }

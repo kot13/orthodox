@@ -32,7 +32,10 @@ class Orthodox
                 $fieldRules = explode('|', $rules[$field]);
 
                 foreach ($fieldRules as $rule) {
-                    $continue = $this->validateAgainstRule($field, $value, $this->getRuleName($rule), $this->getRuleArgs($rule));
+                    $ruleName = $this->getRuleName($rule);
+                    if ($value === null && $ruleName != 'required') continue;
+
+                    $continue = $this->validateAgainstRule($field, $value, $ruleName, $this->getRuleArgs($rule));
 
                     if (!$continue) {
                         break;
