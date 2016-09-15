@@ -23,7 +23,7 @@ $dataSetThird = [
     'username'          => 'demo',
     'email'             => 'demo@example.com',
     'age'               => 29,
-    'favorite_fruit'    => 'apple',
+    'favorite_fruit'    => 'banana',
     'password'          => 'qwerty',
     'password_confirm'  => 'qwerty2',
 ];
@@ -35,6 +35,30 @@ $rules = [
     'favorite_fruit'    => 'isApple',
     'password'          => 'required',
     'password_confirm'  => 'required|matches(password)'
+];
+
+$TreeDataSet = [
+    'username'          => 'demo',
+    'email'             => 'demo@example.com',
+    'age'               => 29,
+    'parents'   => [
+        'mother' => [
+            'fullName' => 'Mother',
+            'age'      => 'Forty',
+        ],
+        'father' => [
+            'fullName' => ''
+        ],
+    ],
+];
+
+$treeRules = [
+    'username'                  => 'required',
+    'email'                     => 'required|email',
+    'age'                       => 'number',
+    'parents.mother.fullName'   => 'required',
+    'parents.mother.age'        => 'number',
+    'parents.father.fullName'   => 'required',
 ];
 
 $o = new Orthodox;
@@ -68,5 +92,16 @@ if ($o->passes()) {
     echo "Third data set passed!\n\r";
 } else {
     echo "Third data set not passed!\n\r";
-    print_r($o->errors());echo "\n\r";
+    print_r($o->errors());
+    echo "\n\r";
+}
+
+$o->validate($TreeDataSet, $treeRules);
+
+if ($o->passes()) {
+    echo "Tree data set passed!\n\r";
+} else {
+    echo "Tree data set not passed!\n\r";
+    print_r($o->errors());
+    echo "\n\r";
 }

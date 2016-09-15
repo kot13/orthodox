@@ -26,19 +26,32 @@ class Orthodox
 
         $fields = array_unique(array_merge(array_keys($data), array_keys($rules)));
 
-        foreach ($fields as $field) {
-            if (isset($rules[$field])) {
-                $value = isset($data[$field]) ? $data[$field] : null;
-                $fieldRules = explode('|', $rules[$field]);
+        foreach ($fields as $fieldGroup) {
+            $childFields = explode('.', $fieldGroup);
+            $checkedFieldItems = [];
 
-                foreach ($fieldRules as $rule) {
-                    $ruleName = $this->getRuleName($rule);
-                    if ($value === null && $ruleName != 'required') continue;
+            foreach ($childFields as $field) {
+                $checkedFieldItems[] = $field;
+                $checkedField = implode('.', $checkedFieldItems);
 
-                    $continue = $this->validateAgainstRule($field, $value, $ruleName, $this->getRuleArgs($rule));
+                if (isset($rules[$checkedField])) {
+                    $value = $data;
 
-                    if (!$continue) {
-                        break;
+                    foreach($checkedFieldItems as $fieldItem){
+                        $value = isset($value[$fieldItem]) ? $value[$fieldItem] : null;
+                    }
+
+                    $fieldRules = explode('|', $rules[$checkedField]);
+
+                    foreach ($fieldRules as $rule) {
+                        $ruleName = $this->getRuleName($rule);
+                        if ($value === null && $ruleName != 'required') continue;
+
+                        $continue = $this->validateAgainstRule($checkedField, $value, $ruleName, $this->getRuleArgs($rule));
+
+                        if (!$continue) {
+                            break;
+                        }
                     }
                 }
             }
