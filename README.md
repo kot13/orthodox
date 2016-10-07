@@ -39,7 +39,7 @@ $rules = [
 
 ```
 $o = new Orthodox;
-$o->validate($dataSetFirst, $rules);
+$o->validate($data, $rules);
 ```
 
 Проверить валидность:

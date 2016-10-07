@@ -6,12 +6,15 @@
             "email": "kot_tdf@mail.ru"
         }
     ],
-    "require": {
-        "php": ">=5.4"
-    },
     "autoload": {
         "psr-4": {
             "Orthodox\\": "src/"
         }
+    },
+    "require": {
+        "php": ">=5.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "5.4.*"
     }
 }
